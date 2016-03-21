@@ -19,6 +19,7 @@ public class Broker {
 	
 	public static void main(final String[] args) {
 		Broker broker = new Broker();
+		System.out.println("Broker is running...");
 		broker.broker();
 	}
 
