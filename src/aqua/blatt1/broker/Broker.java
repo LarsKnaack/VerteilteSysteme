@@ -14,6 +14,7 @@ import aqua.blatt1.common.msgtypes.DeregisterRequest;
 import aqua.blatt1.common.msgtypes.HandoffRequest;
 import aqua.blatt1.common.msgtypes.RegisterRequest;
 import aqua.blatt1.common.msgtypes.RegisterResponse;
+import aqua.blatt2.broker.PoisonPill;
 import messaging.Endpoint;
 import messaging.Message;
 
@@ -37,16 +38,20 @@ public class Broker {
 			}
 		});
 		
-		stopThread.start();
+		//stopThread.start();
 		broker.broker();
 	}
 
 	private void broker() {
 		while (!done) {
 			Message msg = endpoint.blockingReceive();
+			if(msg.getPayload() instanceof PoisonPill) {
+				break;
+			}
 			executor.execute(new BrokerTask(msg));
 		}
 		executor.shutdown();
+		System.exit(0);
 	}
 
 	private class BrokerTask implements Runnable {
