@@ -1,9 +1,9 @@
-package aqua.blatt1.common;
+package aqua.common;
+
+import aqua.client.TankModel;
 
 import java.io.Serializable;
 import java.util.Random;
-
-import aqua.blatt1.client.TankModel;
 
 @SuppressWarnings("serial")
 public final class FishModel implements Serializable {
@@ -23,6 +23,14 @@ public final class FishModel implements Serializable {
 		this.x = x;
 		this.y = y;
 		this.direction = direction;
+	}
+
+	public static int getXSize() {
+		return xSize;
+	}
+
+	public static int getYSize() {
+		return ySize;
 	}
 
 	public String getId() {
@@ -47,14 +55,6 @@ public final class FishModel implements Serializable {
 
 	public void reverse() {
 		direction = direction.reverse();
-	}
-
-	public static int getXSize() {
-		return xSize;
-	}
-
-	public static int getYSize() {
-		return ySize;
 	}
 
 	public void toggle() {

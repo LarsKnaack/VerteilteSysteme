@@ -1,21 +1,26 @@
-package aqua.blatt1.client;
+package aqua.client;
 
-import java.net.InetSocketAddress;
-
+import aqua.common.FishModel;
+import aqua.common.Properties;
+import aqua.common.msgtypes.*;
 import messaging.Endpoint;
 import messaging.Message;
-import aqua.blatt1.common.FishModel;
-import aqua.blatt1.common.Properties;
-import aqua.blatt1.common.msgtypes.DeregisterRequest;
-import aqua.blatt1.common.msgtypes.HandoffRequest;
-import aqua.blatt1.common.msgtypes.RegisterRequest;
-import aqua.blatt1.common.msgtypes.RegisterResponse;
+
+import java.net.InetSocketAddress;
 
 public class ClientCommunicator {
 	private final Endpoint endpoint;
 
 	public ClientCommunicator() {
 		endpoint = new Endpoint();
+	}
+
+	public ClientForwarder newClientForwarder() {
+		return new ClientForwarder();
+	}
+
+	public ClientReceiver newClientReceiver(TankModel tankModel) {
+		return new ClientReceiver(tankModel);
 	}
 
 	public class ClientForwarder {
@@ -33,8 +38,12 @@ public class ClientCommunicator {
 			endpoint.send(broker, new DeregisterRequest(id));
 		}
 
-		public void handOff(FishModel fish) {
+		public void handOff(FishModel fish, InetSocketAddress receiver) {
 			endpoint.send(broker, new HandoffRequest(fish));
+		}
+
+		public void sendToken(InetSocketAddress leftNeighbour, Token token) {
+			endpoint.send(leftNeighbour, token);
 		}
 	}
 
@@ -55,18 +64,15 @@ public class ClientCommunicator {
 
 				if (msg.getPayload() instanceof HandoffRequest)
 					tankModel.receiveFish(((HandoffRequest) msg.getPayload()).getFish());
-
+				if (msg.getPayload() instanceof NeighbourUpdate) {
+					tankModel.updateNeighbours((NeighbourUpdate) msg.getPayload());
+				}
+				if (msg.getPayload() instanceof Token) {
+					tankModel.recieveToken((Token) msg.getPayload());
+				}
 			}
 			System.out.println("Receiver stopped.");
 		}
-	}
-
-	public ClientForwarder newClientForwarder() {
-		return new ClientForwarder();
-	}
-
-	public ClientReceiver newClientReceiver(TankModel tankModel) {
-		return new ClientReceiver(tankModel);
 	}
 
 }

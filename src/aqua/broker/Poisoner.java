@@ -1,11 +1,10 @@
-package aqua.blatt2.broker;
+package aqua.broker;
 
-import java.net.InetSocketAddress;
-
-import javax.swing.JOptionPane;
-
+import aqua.common.Properties;
 import messaging.Endpoint;
-import aqua.blatt1.common.Properties;
+
+import javax.swing.*;
+import java.net.InetSocketAddress;
 
 public class Poisoner {
 	private final Endpoint endpoint;
@@ -16,12 +15,12 @@ public class Poisoner {
 		this.broker = new InetSocketAddress(Properties.HOST, Properties.PORT);
 	}
 
-	public void sendPoison() {
-		endpoint.send(broker, new PoisonPill());
-	}
-
 	public static void main(String[] args) {
 		JOptionPane.showMessageDialog(null, "Press OK button to poison server.");
 		new Poisoner().sendPoison();
+	}
+
+	public void sendPoison() {
+		endpoint.send(broker, new PoisonPill());
 	}
 }

@@ -1,8 +1,8 @@
-package aqua.blatt1.common.msgtypes;
+package aqua.common.msgtypes;
+
+import aqua.common.FishModel;
 
 import java.io.Serializable;
-
-import aqua.blatt1.common.FishModel;
 
 @SuppressWarnings("serial")
 public final class HandoffRequest implements Serializable {

@@ -1,4 +1,4 @@
-package aqua.blatt1.broker;
+package aqua.broker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,16 +9,6 @@ import java.util.List;
  */
 
 public class ClientCollection<T> {
-	private class Client {
-		final String id;
-		final T client;
-
-		Client(String id, T client) {
-			this.id = id;
-			this.client = client;
-		}
-	}
-
 	private final List<Client> clients;
 
 	public ClientCollection() {
@@ -63,6 +53,16 @@ public class ClientCollection<T> {
 
 	public T getRightNeighorOf(int index) {
 		return index < clients.size() - 1 ? clients.get(index + 1).client : clients.get(0).client;
+	}
+
+	private class Client {
+		final String id;
+		final T client;
+
+		Client(String id, T client) {
+			this.id = id;
+			this.client = client;
+		}
 	}
 
 }

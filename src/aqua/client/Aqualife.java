@@ -1,6 +1,6 @@
-package aqua.blatt1.client;
+package aqua.client;
 
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 public class Aqualife {
 
